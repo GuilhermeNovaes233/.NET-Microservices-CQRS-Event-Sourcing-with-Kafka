@@ -29,30 +29,29 @@ namespace Post.Cmd.Infra.Stores
 				.ToList();
 		}
 
-		public async Task SaveEventsAsync(Guid aggregateId, IEnumerable<EventModel> events, int expectedVersion)
-		{
-			var eventStrem = await _eventStoreRepository.FindByAggregateId(aggregateId);
 
-			if (expectedVersion != -1 && eventStrem[^1].Version != expectedVersion)
+		public async Task SaveEventsAsync(Guid aggregateId, IEnumerable<BaseEvent> events, int expectedVersion)
+		{
+			var eventStream = await _eventStoreRepository.FindByAggregateId(aggregateId);
+
+			if (expectedVersion != -1 && eventStream[^1].Version != expectedVersion)
 				throw new ConcurrencyException();
 
 			var version = expectedVersion;
 
-			foreach(var @event in events)
+			foreach (var @event in events)
 			{
 				version++;
 				@event.Version = version;
-
 				var eventType = @event.GetType().Name;
-				
 				var eventModel = new EventModel
 				{
-					TimeStamp= DateTime.Now,
+					TimeStamp = DateTime.Now,
 					AggregateIdentifier = aggregateId,
 					AggregateType = nameof(PostAggregate),
 					Version = version,
 					EventType = eventType,
-					EventData  = @event
+					EventData = @event
 				};
 
 				await _eventStoreRepository.SaveAsync(eventModel);

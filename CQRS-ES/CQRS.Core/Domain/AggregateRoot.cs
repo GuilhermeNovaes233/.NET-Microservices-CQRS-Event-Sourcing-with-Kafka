@@ -2,7 +2,7 @@
 
 namespace CQRS.Core.Domain
 {
-	public abstract class AggragateRoot
+	public abstract class AggregateRoot
 	{
 		protected Guid _id;
 		private readonly List<BaseEvent> _changes = new();
@@ -50,7 +50,7 @@ namespace CQRS.Core.Domain
 		{
 			foreach(var @event in events)
 			{
-				ApplyChanges(@event, false)
+				ApplyChanges(@event, false);
 			}
 		}
 	}

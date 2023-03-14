@@ -1,6 +1,10 @@
 using CQRS.Core.Domain;
+using CQRS.Core.Handlers;
 using CQRS.Core.Infrastructure;
+using Post.Cmd.Api.Commands;
+using Post.Cmd.Domain.Aggregates;
 using Post.Cmd.Infra.Config;
+using Post.Cmd.Infra.Handlers;
 using Post.Cmd.Infra.Repositories;
 using Post.Cmd.Infra.Stores;
 
@@ -9,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<MongoDbConfig>(builder.Configuration.GetSection(nameof(MongoDbConfig)));
 builder.Services.AddScoped<IEventStoreRepository, EventStoreRepository>();
 builder.Services.AddScoped<IEventStore, EventStore>();
+builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHandler>();
+builder.Services.AddScoped<ICommandHandler, CommandHandler>();
 
 builder.Services.AddControllers();
 

@@ -134,7 +134,7 @@ namespace Post.Cmd.Domain.Aggregates
 			_comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment, @event.Username));
 		}
 
-		public void RemoveCommand(Guid commentId, string username)
+		public void RemoveComment(Guid commentId, string username)
 		{
 			if (!_active)
 			{

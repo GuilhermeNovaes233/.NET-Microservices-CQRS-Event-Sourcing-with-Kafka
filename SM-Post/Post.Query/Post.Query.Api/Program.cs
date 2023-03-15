@@ -1,13 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Post.Query.Infra.Data;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Action<DbContextOptionsBuilder> configureDbContext = (o => o.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
-builder.Services.AddDbContext<DataContext>();
-builder.Services.AddSingleton<DatabaseContextFactory>(new DatabaseContextFactory(configureDbContext))();
+Action<DbContextOptionsBuilder> configureDbContext = o => o.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+builder.Services.AddDbContext<DataContext>(configureDbContext);
+builder.Services.AddSingleton<DatabaseContextFactory>(new DatabaseContextFactory(configureDbContext));
 
-
+// create database and tables
+var dataContext = builder.Services.BuildServiceProvider().GetRequiredService<DataContext>();
+dataContext.Database.EnsureCreated();
 
 builder.Services.AddControllers();
 

@@ -27,6 +27,8 @@ builder.Services.AddScoped<IEventConsumer, EventConsumer>();
 
 builder.Services.AddControllers();
 
+builder.Services.AddHostedService<ConsumerHostedService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

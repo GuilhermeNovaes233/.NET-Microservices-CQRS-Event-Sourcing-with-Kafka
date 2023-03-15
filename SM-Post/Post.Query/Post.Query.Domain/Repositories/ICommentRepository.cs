@@ -2,7 +2,7 @@
 
 namespace Post.Query.Domain.Repositories
 {
-	public interface ICommentRepoistory
+	public interface ICommentRepository
 	{
 		Task CreateAsync(CommentEntity comment);
 		Task UpdateAsync(CommentEntity comment);
